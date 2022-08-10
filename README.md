@@ -13,7 +13,7 @@ python3 sentence-alignment.py -i=eng.txt -b=tel.txt -s=eng -t=hin
 
 ## for parallel file
 ```
-python3 sentence-alignment2.py -i=eng.txt -b=tel.txt -s=urd -t=hin
+python3 sentence-alignment2.py -i=eng.txt s=urd -t=hin
 ```
 -i=parallel file
 
