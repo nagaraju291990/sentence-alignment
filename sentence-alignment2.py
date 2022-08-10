@@ -48,8 +48,8 @@ parser = ArgumentParser(description='This script will align source and target fi
 						)
 parser.add_argument("-i", "--input", dest="inputfile",
 					help="provide input file name",required=True)
-parser.add_argument("-b", "--bilingualfile", dest="alignfile",
-					help="provide file to be aligned with input file",required=True)
+#parser.add_argument("-b", "--bilingualfile", dest="alignfile",
+#					help="provide file to be aligned with input file",required=True)
 parser.add_argument("-s", "--srclang", dest="srclang",
 					help="provide lang=eng/hin/tel of the input file",required=True)
 parser.add_argument("-t", "--tgtlang", dest="tgtlang",
@@ -58,19 +58,30 @@ parser.add_argument("-t", "--tgtlang", dest="tgtlang",
 args = parser.parse_args()
 
 input_file = args.inputfile
-align_file = args.alignfile
+#align_file = args.alignfile
 src_lang = args.srclang
 tgt_lang = args.tgtlang
 
 #open file using open file mode
 fp1 = open(input_file) # Open file on read mode -- input file
-src_lines = fp1.read().split("\n") # Create a list containing all lines
+lines = fp1.read().split("\n") # Create a list containing all lines
 fp1.close() # Close file
 
+src_lines = []
+tgt_lines = []
+for l in lines:
+	if(l == ""):
+		continue
+	line = l.split("\t")
+	src_lines.append(line[0])
+	tgt_lines.append(line[1])
+#exit()
+#src_lines = lines[0].split("\n")
+#tgt_lines = lines[1].split("\n")
 #open file using open file mode
-fp2 = open(align_file) # Open file on read mode -- input file
-tgt_lines = fp2.read().split("\n") # Create a list containing all lines
-fp2.close() # Close file
+#fp2 = open(align_file) # Open file on read mode -- input file
+#tgt_lines = fp2.read().split("\n") # Create a list containing all lines
+#fp2.close() # Close file
 
 if(len(src_lines) != len(tgt_lines)):
 	print("Source and Target files line number mismatched..Exiting")
@@ -97,7 +108,7 @@ for s,t in zip(src_lines, tgt_lines):
 					tgt_sentences[i+1]
 					print(ss, tgt_sentences[i])
 				except:
-					print(" ".join(src_sentences[i:]), tgt_sentences[i])
+					print(" ".join(src_sentences[i:]), tgt_sentences[i], "###Look###")
 					break
 					#print(ss, tgt_sentences[i])
 			except:
@@ -113,7 +124,7 @@ for s,t in zip(src_lines, tgt_lines):
 					src_sentences[i+1]
 					print(src_sentences[i], tt)
 				except:
-					print(src_sentences[i], " ".join(tgt_sentences[i:]))
+					print(src_sentences[i], " ".join(tgt_sentences[i:]), "##Look")
 					break
 			except:
 				print(" ", tt)
