@@ -54,6 +54,8 @@ parser.add_argument("-s", "--srclang", dest="srclang",
 					help="provide lang=eng/hin/tel of the input file",required=True)
 parser.add_argument("-t", "--tgtlang", dest="tgtlang",
 					help="provide lang=eng/hin/tel of the file to be aligned",required=True)
+parser.add_argument("-f", "--flag", dest="flag",
+					help="0|1; 0 prints everything, 1 prints only perfect sentences", required=False)
 
 args = parser.parse_args()
 
@@ -61,7 +63,11 @@ input_file = args.inputfile
 #align_file = args.alignfile
 src_lang = args.srclang
 tgt_lang = args.tgtlang
+flag = args.flag
 
+if( flag is None):
+	flag = 0
+#print(flag)
 #open file using open file mode
 fp1 = open(input_file) # Open file on read mode -- input file
 lines = fp1.read().split("\n") # Create a list containing all lines
@@ -98,8 +104,9 @@ for s,t in zip(src_lines, tgt_lines):
 
 	if(src_sent_length == tgt_sent_length):
 		for ss,ts in zip(src_sentences, tgt_sentences):
-			print(ss, ts)
-	if(src_sent_length > tgt_sent_length):
+			print(ss, ts, sep="\t")
+	
+	if(src_sent_length > tgt_sent_length and flag == 0):
 		i = 0
 		for ss in src_sentences:
 			try :
@@ -108,14 +115,14 @@ for s,t in zip(src_lines, tgt_lines):
 					tgt_sentences[i+1]
 					print(ss, tgt_sentences[i])
 				except:
-					print(" ".join(src_sentences[i:]), tgt_sentences[i], "###Look###")
+					print(" ".join(src_sentences[i:]), tgt_sentences[i], "###Look###", sep="\t")
 					break
 					#print(ss, tgt_sentences[i])
 			except:
 				print(ss, " ")
 			i = i + 1
 
-	if(src_sent_length < tgt_sent_length):
+	if(src_sent_length < tgt_sent_length and flag == 0):
 		i = 0
 		for tt in tgt_sentences:
 			try :
@@ -124,7 +131,7 @@ for s,t in zip(src_lines, tgt_lines):
 					src_sentences[i+1]
 					print(src_sentences[i], tt)
 				except:
-					print(src_sentences[i], " ".join(tgt_sentences[i:]), "##Look")
+					print(src_sentences[i], " ".join(tgt_sentences[i:]), "##Look", sep="\t")
 					break
 			except:
 				print(" ", tt)
