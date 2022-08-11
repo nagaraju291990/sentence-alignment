@@ -36,6 +36,8 @@ def split_into_sentences(text, lang):
 	text = text.replace("?","?<stop>")
 	text = text.replace("!","!<stop>")
 	text = text.replace("<prd>",".")
+	if(not re.search('<stop>', text) and text != "  "):
+		text = text + "<stop>"
 	sentences = text.split("<stop>")
 	sentences = sentences[:-1]
 	sentences = [s.strip() for s in sentences]
@@ -76,7 +78,8 @@ fp1.close() # Close file
 src_lines = []
 tgt_lines = []
 for l in lines:
-	if(l == ""):
+	#print("|"+l+"|")
+	if(l == "" or l == " 	"):
 		continue
 	line = l.split("\t")
 	src_lines.append(line[0])
